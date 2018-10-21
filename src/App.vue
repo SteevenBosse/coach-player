@@ -1,29 +1,72 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <Navbar></Navbar>
+        <div id="wrapper" v-bind:class="{toggled:sideNaveToggled}">
+            <div>
+                <Sidenav></Sidenav>
+            </div>
+            <div id="page-content-wrapper">
+                <MainContent></MainContent>
+            </div>
+        </div>
     </div>
-    <router-view/>
-  </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+    import Navbar from './components/nav/Navbar';
+    import Sidenav from './components/nav/Sidenav';
+    import MainContent from "./components/MainContent"
+
+    export default {
+        name: "coachplayer",
+        components: {Navbar, Sidenav, MainContent},
+        computed: {
+            sideNaveToggled() {
+                return this.$store.state.Sidenav.isToggled;
+            }
+        }
+    };
+</script>
+
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+
+    * {
+        font-family: "Source Sans Pro", sans-serif;
     }
-  }
-}
+
+    /* Toggle Styles */
+
+    #wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        overflow: hidden;
+    }
+
+    #wrapper.toggled {
+        padding-left: 200px;
+        overflow: hidden;
+    }
+
+    #page-content-wrapper {
+        padding-left: 100px;
+        padding-top: 80px;
+        padding-right: 60px;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        padding-left: 100px;
+        margin-right: 10px;
+    }
+
+    .fixed-brand {
+        width: auto;
+    }
 </style>

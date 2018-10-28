@@ -1,0 +1,40 @@
+version: '2'
+services:
+  web:
+    container_name: coach-player-ui
+    build: ./client
+    command: npm run serve
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - "8080:8080"
+    links:
+      - server
+  server:
+    container_name: coach-player-server
+    build: ./server
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - "8000:8000"
+    links:
+      - db
+  db:
+    image: postgres
+    container_name: coach-player-postgres
+    environment:
+      - POSTGRES_USER=coachadmin
+      - POSTGRES_PASSWORD=coach1234
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: fenglc/pgadmin4
+    container_name: coach-player-pgadmin
+    environment:
+      - DEFAULT_USER=coachadmin@hotmail.com
+      - DEFAULT_PASSWORD=coach1234
+    ports:
+      - "5050:5050"
+    links:
+      - db
